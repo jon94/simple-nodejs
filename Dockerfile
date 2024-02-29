@@ -16,6 +16,7 @@ COPY . .
 # Expose the port that the app will run on
 EXPOSE 3000
 
+# optional this is for dd source code integration
 ARG DD_GIT_REPOSITORY_URL
 ARG DD_GIT_COMMIT_SHA
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL} 
