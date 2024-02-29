@@ -1,0 +1,138 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "nodejs_app",
+            "image": "jonlimpw/simple-nodejs:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "nodejs_app-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "nodejs_app-3000-tcp",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DD_TRACE_SAMPLE_RATE",
+                    "value": "1"
+                },
+                {
+                    "name": "DD_APPSEC_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_VERSION",
+                    "value": "1.0.0"
+                },
+                {
+                    "name": "DD_RUNTIME_METRICS_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_SERVICE",
+                    "value": "nodejsfargate"
+                },
+                {
+                    "name": "DD_APM_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_ENV",
+                    "value": "fargate-ecs"
+                },
+                {
+                    "name": "DD_PROFILING_ENABLED",
+                    "value": "true"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dockerLabels": {
+                "com.datadoghq.tags.env": "fargate-ecs",
+                "com.datadoghq.tags.service": "nodejsfargate",
+                "com.datadoghq.tags.version": "1.0.0"
+            },
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/jonlim-fargatenodejs-datadog",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        },
+        {
+            "name": "datadog-agent",
+            "image": "public.ecr.aws/datadog/agent:latest",
+            "cpu": 262,
+            "portMappings": [
+                {
+                    "name": "datadog-agent-8126-tcp",
+                    "containerPort": 8126,
+                    "hostPort": 8126,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DD_API_KEY",
+                    "value": "redacted"
+                },
+                {
+                    "name": "DD_SITE",
+                    "value": "datadoghq.com"
+                },
+                {
+                    "name": "DD_CONTAINER_EXCLUDE",
+                    "value": "image:^aws-fargate-pause$"
+                },
+                {
+                    "name": "DD_PROCESS_AGENT_PROCESS_COLLECTION_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "ECS_FARGATE",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_APM_ENABLED",
+                    "value": "true"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "family": "jonlim-fargatenodejs-datadog",
+    "taskRoleArn": "redacted",
+    "executionRoleArn": "redacted",
+    "networkMode": "awsvpc",
+    "revision": 3,
+    "volumes": [],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "pidMode": "task",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
