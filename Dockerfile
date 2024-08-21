@@ -23,4 +23,4 @@ ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
 
 # Define the command to run your application with dd trace
-CMD [ "node", "--require", "dd-trace/init", "app.js" ]
+CMD [ "node", "app.js" ]
