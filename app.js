@@ -1,6 +1,18 @@
+const tracer = require('dd-trace').init();  // Add this line to import and initialize the tracer
 const express = require("express");
 const app = express();
 const port = 3000;
+
+// Add the tracer hook to track requests for the /user/:id route
+tracer.use('express', {
+  hooks: {
+    request: (span, req, res) => {
+      if (req.route && req.route.path === '/user/:id') {
+        span.setTag('http.route', '/user/:id');
+      }
+    }
+  }
+});
 
 // Define a GET endpoint at /api
 app.get("/api", (req, res) => {
@@ -8,14 +20,11 @@ app.get("/api", (req, res) => {
     message: "Hello, this is a simple API!",
     date: new Date(),
   };
-
-  // Send the JSON response
   res.json(apiResponse);
 });
 
 // Define a GET endpoint at /getErrorRequest to simulate an application error
 app.get("/getErrorRequest", (req, res) => {
-  // Simulate an error by throwing an exception
   throw new Error("This is a simulated application error");
 });
 
