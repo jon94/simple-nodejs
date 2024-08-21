@@ -4,15 +4,14 @@ const app = express();
 const port = 3000;
 
 // Add the tracer hook to track requests for the /user/:id route
+tracer.init()
 tracer.use('express', {
   hooks: {
     request: (span, req, res) => {
-      if (req.route && req.route.path === '/user/:id') {
-        span.setTag('http.route', '/user/:id');
-      }
+      span.setTag('http.route', req.originalUrl)
     }
   }
-});
+})
 
 // Define a GET endpoint at /api
 app.get("/api", (req, res) => {
