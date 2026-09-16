@@ -7,7 +7,7 @@
         "start": "node app.js"
     },
     "dependencies": {
-        "dd-trace": "^5.76.0",
+        "dd-trace": "^6.16.0",
         "express": "^4.17.1"
     }
 }
